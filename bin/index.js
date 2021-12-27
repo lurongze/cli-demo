@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import chalk from 'chalk';
 import { Command } from 'commander';
-import { handler } from '../functions/create.js';
+import { createHandler, checkEnvHandler } from '../functions/index.js';
 
 const program = new Command();
 
@@ -27,9 +27,14 @@ const program = new Command();
 // }
 program.version('0.0.1.1', '-v,--version,-V', '获取版本号');
 
-program.command('c [name]').description('新建项目').option('--recover', '强制覆盖同名目录').action((name, options) => {
+program.command('check env').description('检测基础环境').action((name, options) => {
   console.log('创建的项目为：', chalk.blue(name), options);
-  handler(name);
+  checkEnvHandler(name);
+});
+
+program.command('c [name]').description('新建项目').option('--recover', '强制覆盖同名目录', false).action((name, options) => {
+  console.log('创建的项目为：', chalk.blue(name), options);
+  createHandler(name);
 });
 
 program.parse(process.argv);
